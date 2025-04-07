@@ -1,0 +1,140 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=black, backref=page]{hyperref}
+\usepackage{lscape}
+\usepackage{placeins}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+% Define custom colors
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+% Configure lstlisting settings for Python
+\lstset{
+  frame=tb,                      % Draw a frame at the top and bottom of the code block
+  language=Python,               % Set the language to Python
+  aboveskip=3mm,                 % Add space above the code block
+  belowskip=3mm,                 % Add space below the code block
+  showstringspaces=false,        % Do not display string spaces with special underlines
+  columns=flexible,              % Allow flexible column spacing
+  basicstyle={\small\ttfamily},  % Set the font style and size for code
+  numbers=left,                  % Display line numbers on the left
+  numberstyle=\tiny\color{gray}, % Style for line numbers
+  keywordstyle=\color{blue},     % Style for keywords
+  commentstyle=\color{dkgreen},  % Style for comments
+  stringstyle=\color{mauve},     % Style for strings
+  breaklines=true,               % Allow long lines to break
+  breakatwhitespace=true,        % Break lines at whitespace if possible
+  tabsize=4                      % Set tab size to 4 spaces
+}
+
+
+
+
+\title{Task 5 -- NLO Lab Sheet 5}
+\maketitle
+
+
+\begin{document}
+
+\section{Assessed Task 1(c)}
+\textbf{Question:} Describe the solution to the Haverly-1 pooling problem: what is the proportion of components in the pool and how much of which product should be produced?
+
+\textbf{Solution:}
+When we are solving the Haverly-1 pooling problem by using the $L_2$-penalty method, we see that the quality of the solution depends significantly on the penalty parameter $c$. The results for different values of $c$ are tabulated as follows as we changed them to see variations:
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c c c}
+        \toprule
+        $c$ & Iterations & Final $f(x^*)$ \\
+        \midrule
+        5 & 1 & $-\infty$ \\
+        30 & 19 & $-76.49$ \\
+        300 & 47 & $-1.4133$ \\
+        3000 & 54 & $-4.0895$ \\
+        30000 & 105 & $-4.0091$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{Convergence results for different values of $c$.}
+    \label{tab:convergence}
+\end{table}
+
+
+For $c = 30000$, the final solution vector is as follows:
+\[
+(-0.00006554, 0.999333585, -0.00013291, 0.998971848, 0.000265618, 1.00109509)
+\]
+This final solution vector converges to the apparent limit solution of $(0, 1, 0, 1, 0, 1)$ for $(q_1, q_2, y_1, y_2, z_1, z_2)$.
+
+\newpage
+\renewcommand{\arraystretch}{1.3} % Increase row height for better readability
+\begin{table}[]
+    \centering
+    \small % Reduce font size slightly for elegance
+    \begin{tabular}{ p{4cm} p{10cm} }
+        \toprule
+        \multicolumn{2}{c}{\textbf{Solution Summary}} \\
+        \midrule
+        \textbf{Pool Composition} & 100\% Component 2 ($q_1=0$, $q_2=1$) with no Component 1 \\
+        \textbf{Product Flow (Pool)} & Entirely to Product 2 ($y_1=0$, $y_2=1$), 1 ton \\
+        \textbf{Product Flow (Component 3)} & Entirely to Product 2 ($z_1=0$, $z_2=1$), 1 ton \\
+        \textbf{Product 1 Production} & 0 tons \\
+        \textbf{Product 2 Production} & 2 tons \\
+        \textbf{Product 2 Composition} & 50\% Component 2 (1\% Sulfur), 50\% Component 3 (2\% Sulfur) \\
+        \bottomrule
+    \end{tabular}
+    \caption{Solution Summary}
+    \label{Table 2}
+\end{table}
+
+
+
+This mixture gives product 2 a sulfur content of:
+\[
+
+(0.5 \times 1\% + 0.5 \times 2\%) = 1.5\%
+\]
+which exactly meets the maximum allowable sulfur content for product 2.
+
+This solution thus maximizes profit by producing the maximum allowable amount of the higher-valued product 2 (which it sells at 15 per ton) while exactly meeting the sulfur content threshold of 1.5\% as we can see from the calculations. With increasing $c$ values the progression in solution demonstrates how the penalty method gradually enforces feasibility as the penalty parameter increases.
+
+\newpage
+\section{Assessed Task 3(e)}
+\textbf{Question:} In part 3(e) what happens to the trust region size $\rho$ as you approach the solution? Is this what you would expect? If we did use SQP rather than SLP would you expect the same behaviour?
+
+\subsection{Solution}
+\subsubsection{Part 1}
+So when we switch on the trust region logic in implementing SLP, we observe the convergence behavior which is as follows:
+
+\begin{itemize}
+    \item Our lgorithm converges to $x^* = (0.70708704, 0.70712653)$ in 36 iterations, regardless if we start with $\rho_0 = 10$ or $\rho_0 = 1$.
+    \item The obatined solution is very close to the theoretical solution of $(\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}) \approx (0.7071, 0.7071)$.
+    \item The trust region size $\rho$ values fluctuates in some extent during iterations, but they still show a clear trend as $\rho \rightarrow 0$.
+    \item The final value of $\rho$ is extremely small: $0.000002$.
+\end{itemize}
+
+Now this in case of an SLP implementation for a problem where the solution is not at a vertex of the feasible region can be \textbf{expected}. And in our specific example (minimizing $-x-y$ subject to $y \geq x^2$, $x^2 + y^2 \leq 1$), the solution is at a point where only the circle constraint $x^2 + y^2 \leq 1$ is active. This means the curvature of the constraint is very important for us to have a solution.
+
+There are a few reason why $\rho$ must approach zero is very fundamental to how SLP works: SLP iteratively approximates both the objective function and constraints using linearization. This approach simplifies solving nonlinear problems but relies on stepwise refinement. And again, as discussed when the solution is not at the vertex, the curvature of the constraints dictate the final result because purely linear models cannot fully capture nonlinear interactions. However, even near the optimal solution, a linear approximation typically finds a feasible descent direction, ensuring progress toward optimality. But one can anticipate that the main challenge arises when the algorithm overshoots as a result of taking large steps. What we can do to combat this is, we can reduce the trust region size progressively, restrict the step length thereby forcing convergence towards an accurate solution.
+
+
+
+\subsubsection{Part 2}
+Now if we were to use SQP (Sequential Quadratic Programming) instead of SLP, we would anticipate different behavior. SQP incorporates second-order by using quadratic approximations of the Lagrangian function, which captures the curvature of both the objective and constraints.
+
+With SQP, we would expect: a better handling of curvature in both objective and constraints, a faster convergence near the solution with no need for the trust region size to approach zero for convergence as it would likely stabilize at a reasonable value.
+
+This is very fundamental because SQP's quadratic model can accurately represent the curvature of the constraints near the solution and thus identifying the correct solution without havinh the necessity of an arbitrarily small step size.
+
+Therefore, due to these fundamental aspects of SQP we would not need what we did in SLP to incorporate in SQP because SQP has a lot of inherent fundamentals that capture the nuances that SLP fails to. 
+
+\section{Acknowledgment}
+Thank you Andreas and Josh :)
+
+\end{document}

@@ -1,0 +1,580 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=black, backref=page]{hyperref}
+\usepackage{lscape}
+\usepackage{placeins}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+
+% Define custom colors
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+% Configure lstlisting settings for Python
+\lstset{
+  frame=tb,                      % Draw a frame at the top and bottom of the code block
+  language=Python,               % Set the language to Python
+  aboveskip=3mm,                 % Add space above the code block
+  belowskip=3mm,                 % Add space below the code block
+  showstringspaces=false,        % Do not display string spaces with special underlines
+  columns=flexible,              % Allow flexible column spacing
+  basicstyle={\small\ttfamily},  % Set the font style and size for code
+  numbers=left,                  % Display line numbers on the left
+  numberstyle=\tiny\color{gray}, % Style for line numbers
+  keywordstyle=\color{blue},     % Style for keywords
+  commentstyle=\color{dkgreen},  % Style for comments
+  stringstyle=\color{mauve},     % Style for strings
+  breaklines=true,               % Allow long lines to break
+  breakatwhitespace=true,        % Break lines at whitespace if possible
+  tabsize=4                      % Set tab size to 4 spaces
+}
+
+\begin{document}
+
+\title{NLO Assignment 1}
+\author{}
+\date{\today}
+\maketitle
+
+\section*{Solutions}
+
+
+
+\section{Gradient and Hessian Computation}
+\begin{equation}
+f(x_1, x_2) = x_1^4 + x_1x_2 + (1 + x_2)^2
+\end{equation}
+
+The gradient of the function is the vector of first-order partial derivatives which is mathematically given by: 
+\begin{equation}
+\nabla f(x) =
+\begin{pmatrix}
+\frac{\partial f}{\partial x_1}\\
+\\
+\frac{\partial f}{\partial x_2}
+\end{pmatrix}
+\end{equation}
+
+
+\subsection*{Partial derivative with respect to \( x_1 \)}
+\begin{align*}
+\frac{\partial f}{\partial x_1} &= \frac{\partial}{\partial x_1} \left( x_1^4 + x_1x_2 + (1 + x_2)^2 \right) \\
+&= 4x_1^3 + x_2 = f_1
+\end{align*}
+
+\subsection*{Partial derivative with respect to \( x_2 \)}
+\begin{align*}
+\frac{\partial f}{\partial x_2} &= \frac{\partial}{\partial x_2} \left( x_1^4 + x_1x_2 + (1 + x_2)^2 \right) \\
+&= x_1 + 2x_2 + 2 = f_2
+\end{align*}
+
+Thus, the gradient is:
+
+\begin{equation}
+\nabla f(x) =
+\begin{pmatrix}
+4x_1^3 + x_2 \\
+\\
+x_1 + 2x_2 + 2
+\end{pmatrix}
+\end{equation}
+
+\section*{The Hessian \( \nabla^2 f(x) \)}
+The Hessian matrix consists of second-order partial derivatives  of \( f(x_1, x_2) \) which is mathematically defined as: 
+\begin{equation}
+\nabla^2 f(x) =
+\begin{pmatrix}
+\frac{\partial^2 f}{\partial x_1^2} & \frac{\partial^2 f}{\partial x_1 \partial x_2} \\
+\\
+\frac{\partial^2 f}{\partial x_2 \partial x_1} & \frac{\partial^2 f}{\partial x_2^2}
+\end{pmatrix}
+\end{equation}
+
+Previously we found:
+
+\begin{equation}
+\nabla f(x) =
+\begin{pmatrix}
+\frac{\partial f}{\partial x_1} \\
+\\
+\frac{\partial f}{\partial x_2}
+\end{pmatrix}
+=
+\begin{pmatrix}
+4x_1^3 + x_2 \\
+\\
+x_1 + 2x_2 + 2
+\end{pmatrix}
+\end{equation}
+
+
+\begin{align*}
+\frac{\partial^2 f}{\partial x_1^2} &= \frac{\partial}{\partial x_1} \left( \frac{\partial f}{\partial x_1} \right) \\
+&= \frac{\partial}{\partial x_1} (4x_1^3 + x_2) \\
+&= 12x_1^2 + 0 \\
+&= 12x_1^2
+\end{align*}
+
+
+\begin{align*}
+\frac{\partial^2 f}{\partial x_1 \partial x_2} &= \frac{\partial}{\partial x_2} \left( \frac{\partial f}{\partial x_1} \right) \\
+&= \frac{\partial}{\partial x_2} (4x_1^3 + x_2) \\
+&= 0 + 1 \\
+&= 1
+\end{align*}
+
+
+
+\begin{equation}
+\frac{\partial^2 f}{\partial x_2 \partial x_1} = \frac{\partial^2 f}{\partial x_1 \partial x_2} = 1
+\end{equation}
+
+
+\begin{align*}
+\frac{\partial^2 f}{\partial x_2^2} &= \frac{\partial}{\partial x_2} \left( \frac{\partial f}{\partial x_2} \right) \\
+&= \frac{\partial}{\partial x_2} (x_1 + 2x_2 + 2) \\
+&= 0 + 2 + 0 \\
+&= 2
+\end{align*}
+
+Finally we have the Hessian Matrix as:
+
+\begin{equation}
+\nabla^2 f(x) =
+\begin{pmatrix}
+12x_1^2 & 1 \\
+1 & 2
+\end{pmatrix}
+\end{equation}
+
+
+ Evaluating the Hessian at \( (0,0) \) by substituting \( x_1 = 0 \) and \( x_2 = 0 \) we have:
+
+\begin{equation}
+\nabla^2 f(0,0) =
+\begin{pmatrix}
+0 & 1 \\
+1 & 2
+\end{pmatrix}
+\end{equation}
+
+
+A matrix is positive definite if all leading principal minors are positive or  all eigenvalues are positive.
+
+The first leading principal minor, the top-left element is
+  \begin{equation}
+  D_1 = 0
+  \end{equation}
+
+The second leading principal minor or the determinant of the full Hessian is:
+  \begin{equation}
+  D_2 = \begin{vmatrix} 0 & 1 \\ 1 & 2 \end{vmatrix} = (0)(2) - (1)(1) = -1
+  \end{equation}
+
+\textbf{Since \( D_1 = 0 \) and \( D_2 < 0 \), the Hessian does not satisfy the principal minor test and therefore is not positive definite. }
+
+Equivalently,
+
+\begin{equation}
+\det \begin{pmatrix} 0 - \lambda & 1 \\ 1 & 2 - \lambda \end{pmatrix} = 0
+\end{equation}
+
+Expanding the determinant:
+
+\begin{align*}
+(-\lambda)(2 - \lambda) - (1)(1) &= \lambda^2 - 2\lambda - 1 = 0
+\end{align*}
+
+Solving for \( \lambda \):
+
+\begin{align*}
+\lambda &= \frac{2 \pm \sqrt{4 + 4}}{2} \\
+&= \frac{2 \pm \sqrt{8}}{2} \\
+&= \frac{2 \pm 2\sqrt{2}}{2} \\
+&= 1 \pm \sqrt{2}
+\end{align*}
+
+Since one of the eigenvalues of the matrix is \( 1 - \sqrt{2} \)   is negative, the Hessian is not positive definite as for it to be one all its eigenvalue have to be positive. 
+
+\section{Newton's Method -- Descent Direction}
+
+Newton’s method is an iterative optimization algorithm for finding a stationary point of a function \( f(x) \) which given an initial point \( x^0 \), is mathematically defined as:
+
+\begin{equation}
+x^{k+1} = x^k + \alpha d^k
+\end{equation}
+
+where \( d^k \) is the Newton search direction and $\alpha$ is the step size and the step direction is mathematically calculated as follows:
+
+\begin{equation}
+d^k = - [\nabla^2 f(x^k)]^{-1} \nabla f(x^k).
+\end{equation}
+
+And in this case we need to focus on:
+\begin{equation}
+d^0 = - [\nabla^2 f(0,0)]^{-1} \nabla f(0,0).
+\end{equation}
+
+From our calculations in Section 1 we have,
+
+\begin{equation}
+\nabla^2 f(0,0) =
+\begin{pmatrix}
+0 & 1 \\
+1 & 2
+\end{pmatrix}
+\end{equation}
+
+and
+
+\begin{equation}
+\nabla f(0,0) =
+\begin{pmatrix}
+4(0)^3 + 0 \\
+0 + 2(0) + 2
+\end{pmatrix}
+=
+\begin{pmatrix}
+0 \\
+2
+\end{pmatrix}.
+\end{equation}
+
+Now the inverse of a \( 2 \times 2 \) matrix in general form of
+
+\begin{equation}
+A =
+\begin{pmatrix}
+a & b \\
+c & d
+\end{pmatrix}
+\end{equation}
+
+is given by:
+
+\begin{equation}
+A^{-1} = \frac{1}{\det(A)}
+\begin{pmatrix}
+d & -b \\
+-c & a
+\end{pmatrix}
+\end{equation}
+
+where \( \det(A) = ad - bc \).
+
+In our case the Hessian Matrix is given by:
+
+\begin{equation}
+A = 
+\begin{pmatrix}
+0 & 1 \\
+1 & 2
+\end{pmatrix}
+\end{equation}
+
+whose determinant is as follows:
+
+\begin{align*}
+\det(A) &= (0)(2) - (1)(1) \\
+&= 0 - 1 = -1.
+\end{align*}
+
+The inverse of the above matrix is hence given by:
+
+\begin{align*}
+[\nabla^2 f(0,0)]^{-1} &= \frac{1}{-1}
+\begin{pmatrix}
+2 & -1 \\
+-1 & 0
+\end{pmatrix} \\
+&=
+\begin{pmatrix}
+-2 & 1 \\
+1 & 0
+\end{pmatrix}.
+\end{align*}
+
+Calculating the Newton direction:
+
+\begin{equation}
+d^0 = - [\nabla^2 f(0,0)]^{-1} \nabla f(0,0).
+\end{equation}
+
+\begin{align*}
+d^0 &= - 
+\begin{pmatrix}
+-2 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+0 \\
+2
+\end{pmatrix}.
+\end{align*}
+
+\begin{align*}
+\begin{pmatrix}
+-2 & 1 \\
+1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+0 \\
+2
+\end{pmatrix}
+&=
+\begin{pmatrix}
+(-2)(0) + (1)(2) \\
+(1)(0) + (0)(2)
+\end{pmatrix} \\
+&=
+\begin{pmatrix}
+2 \\
+0
+\end{pmatrix}.
+\end{align*}
+
+Thus,
+
+\begin{equation}
+d^0 = - 
+\begin{pmatrix}
+2 \\
+0
+\end{pmatrix}
+=
+\begin{pmatrix}
+-2 \\
+0
+\end{pmatrix}.
+\end{equation}
+
+ Now, lets check if \( d^0 \) is a Descent Direction. The direction \( d^0 \) is a descent if:
+
+\begin{equation}
+\nabla f(x^0)^T d^0 < 0.
+\end{equation}
+
+\begin{align*}
+\nabla f(0,0)^T d^0 &= 
+\begin{pmatrix}
+0 & 2
+\end{pmatrix}
+\begin{pmatrix}
+-2 \\
+0
+\end{pmatrix} \\
+&= (0)(-2) + (2)(0) \\
+&= 0.
+\end{align*}
+
+\textbf{Since \( \nabla f(0,0)^T d^0 = 0 \),  \( d^0 \) is not a descent direction}.
+
+\newpage
+
+
+\section{Modified Newton’s Method}
+We have,
+
+\begin{equation}
+\nabla^2 f(0,0) =
+\begin{pmatrix}
+0 & 1 \\
+1 & 2
+\end{pmatrix}.
+\end{equation}
+
+As per the question in the modified Newton's method we have:
+\begin{equation}
+\nabla^2 f(0,0) + \nu I_2,
+\end{equation}
+
+where \( I_2 \) is the \( 2 \times 2 \) identity matrix, and \( \nu > 0 \). The modified version of the Hessian thus takes the following form: 
+
+\begin{equation}
+\nabla^2 f(0,0) + \nu I_2 =
+\begin{pmatrix}
+0 & 1 \\
+1 & 2
+\end{pmatrix}
++ \nu 
+\begin{pmatrix}
+1 & 0 \\
+0 & 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+\nu & 1 \\
+1 & 2 + \nu
+\end{pmatrix}.
+\end{equation}
+
+A symmetric matrix of the form
+
+\begin{equation}
+A =
+\begin{pmatrix}
+a & b \\
+b & d
+\end{pmatrix}
+\end{equation}
+
+is \textbf{positive definite} iff as per \textbf{the criteria of principal minors}:
+
+\begin{itemize}
+    \item The first leading principal minor is positive: \( a > 0 \).
+    \item The determinant is positive: \( \det(A) > 0 \).
+\end{itemize}
+
+The first leading principal minor is:
+
+\begin{equation}
+\nu > 0.
+\end{equation}
+
+The determinant must satisfy:
+
+\begin{equation}
+\det 
+\begin{pmatrix}
+\nu & 1 \\
+1 & 2 + \nu
+\end{pmatrix} > 0.
+\end{equation}
+
+The determinant calculated is as follows:
+
+\begin{align*}
+\det(A) &= (\nu)(2 + \nu) - (1)(1) \\
+&= \nu(2 + \nu) - 1 \\
+&= \nu^2 + 2\nu - 1.
+\end{align*}
+
+For the matrix to be positive definite, we need:
+
+\begin{equation}
+\nu^2 + 2\nu - 1 > 0.
+\end{equation}
+ 
+We solve for \( \nu \)  the quadratic equation:
+
+\begin{equation}
+\nu^2 + 2\nu - 1 = 0.
+\end{equation}
+
+\begin{equation}
+\nu = \frac{-2 \pm \sqrt{(2)^2 - 4(1)(-1)}}{2(1)}.
+\end{equation}
+
+\begin{equation}
+= \frac{-2 \pm \sqrt{4 + 4}}{2} = \frac{-2 \pm \sqrt{8}}{2}.
+\end{equation}
+
+\begin{equation}
+= \frac{-2 \pm 2\sqrt{2}}{2} = -1 \pm \sqrt{2}.
+\end{equation}
+
+As \( \sqrt{2} \approx 1.414 \), we have:
+
+\begin{equation}
+-1 + \sqrt{2} \approx 0.414, \quad -1 - \sqrt{2} \approx -2.414.
+\end{equation}
+
+As the expression is positive for \( \nu > -1 + \sqrt{2} \) and we require \( \nu > 0 \), \textbf{the condition we need for which the new matrix is positive definite is}:
+
+\textbf{\begin{equation}
+\nu > \sqrt{2} - 1.
+\end{equation}}
+
+\subsection{Analyzing \( \nu = 1 \)}
+
+For \( \nu = 1 \), the modified Hessian is:
+
+\begin{equation}
+\begin{pmatrix}
+1 & 1 \\
+1 & 3
+\end{pmatrix}.
+\end{equation}
+
+Its determinant is given by:
+
+\begin{equation}
+\det \begin{pmatrix} 1 & 1 \\ 1 & 3 \end{pmatrix} = (1)(3) - (1)(1) = 3 - 1 = 2 > 0.
+\end{equation}
+
+Since \( 1 > 0 \), the matrix is positive definite. For \( \nu = 1 \), the inverse of the matrix is :
+
+\begin{equation}
+\begin{pmatrix} 1 & 1 \\ 1 & 3 \end{pmatrix}
+\end{equation}
+
+is given by:
+
+\begin{equation}
+A^{-1} = \frac{1}{\det(A)}
+\begin{pmatrix} d & -b \\ -c & a \end{pmatrix}.
+\end{equation}
+
+Substituting values:
+
+\begin{equation}
+A^{-1} = \frac{1}{2}
+\begin{pmatrix}
+3 & -1 \\
+-1 & 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+\frac{3}{2} & -\frac{1}{2} \\
+-\frac{1}{2} & \frac{1}{2}
+\end{pmatrix}.
+\end{equation}
+
+Now we try to find the search direction: 
+
+\begin{equation}
+d^0 = - A^{-1} \nabla f(0,0).
+\end{equation}
+
+\begin{equation}
+d^0 = - 
+\begin{pmatrix} \frac{3}{2} & -\frac{1}{2} \\ -\frac{1}{2} & \frac{1}{2} \end{pmatrix}
+\begin{pmatrix} 0 \\ 2 \end{pmatrix}.
+\end{equation}
+
+Matrix-vector multiplication carried out we see:
+
+\begin{align*}
+\begin{pmatrix} \frac{3}{2} & -\frac{1}{2} \\ -\frac{1}{2} & \frac{1}{2} \end{pmatrix}
+\begin{pmatrix} 0 \\ 2 \end{pmatrix}
+&=
+\begin{pmatrix} (3/2)(0) + (-1/2)(2) \\ (-1/2)(0) + (1/2)(2) \end{pmatrix} \\
+&=
+\begin{pmatrix} -1 \\ 1 \end{pmatrix}.
+\end{align*}
+
+Thus,
+
+\begin{equation}
+d^0 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}.
+\end{equation}
+
+Now let us check if the calculated direction is a descent direction:
+
+\begin{equation}
+\nabla f(0,0)^T d^0 = \begin{pmatrix} 0 & 2 \end{pmatrix} \begin{pmatrix} 1 \\ -1 \end{pmatrix}.
+\end{equation}
+
+\begin{equation}
+= (0)(1) + (2)(-1) = -2 < 0.
+\end{equation}
+
+\textbf{Since \( \nabla f(0,0)^T d^0 < 0 \), the direction \( d^0 = (1,-1) \) is a descent direction.}
+
+
+
+\end{document}
+
